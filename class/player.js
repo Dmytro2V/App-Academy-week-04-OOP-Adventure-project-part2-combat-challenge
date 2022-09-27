@@ -33,6 +33,7 @@ class Player extends Character {
         console.log(`  ${this.items[i].name}`);
       }
     }
+    console.log(`${this.name} health is ${this.health}`);
   }
 
   takeItem(itemName) {
@@ -61,10 +62,12 @@ class Player extends Character {
 
     // Fill this in
     let item = this.getItemByName(itemName)
-    if (item.isFood) {// removing
+    if (item && item.isFood) {// removing
         let playerItems = this.items;
         this.items = playerItems.filter(playerItem =>playerItem.name != itemName);
-    }
+        this.health += 10;
+        console.log(`You fill better. Health is up +10`);
+      }
     // if not food do nothing
 
   }
@@ -82,15 +85,22 @@ class Player extends Character {
 
   hit(name) {
     // Fill this in
+    
     // get enemy    
-    //const { World } = require('./world');
-    let [enemy] = World.enemies.filter(enemy => enemy.name === name); 
-    //let enemy = this.currentRoom.getEnemyByName(name);
+    let [enemy] = World.getEnemiesInRoom(this.currentRoom).filter(enemy => enemy.name === name); 
+    // above is a bit ugly way, more logical is direct
+    //let [enemy] = World.enemies.filter(enemy => enemy.name === name); 
+    //and it works, but behaves buggy in mocha (passes only if test is first)
+    
     //set enemy target
-    enemy.setTarget()
-    //enemy.attackTarget = this;    
-    //enemy.setTarget(this);
-    enemy.setPlayer(this);
+    if (enemy.health > 0) {// enemy is here and alive
+      console.log(`${this.name} attacking ${enemy.name}!!!`);
+      enemy.applyDamage(10)
+      enemy.setTarget()
+      //enemy.attackTarget = this.player - this also not keeping test
+    }
+    
+    
   }
 
   die() {

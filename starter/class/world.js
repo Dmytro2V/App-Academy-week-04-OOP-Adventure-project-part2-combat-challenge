@@ -6,7 +6,7 @@ const { Enemy } = require('./enemy');
 class World {
 
   static rooms = {};
-  static enemies = [];  
+  static enemies = [];
 
   static setPlayer(player) {
     for (let i = 0 ; i < World.enemies.length ; i++) {
@@ -23,7 +23,7 @@ class World {
       }
     }
   }
- 
+
   static getEnemiesInRoom(room) {
     return World.enemies.filter(enemy => enemy.currentRoom === room);
   }
@@ -82,7 +82,6 @@ class World {
       let enemyRoom = World.rooms[enemyData.room];
       let newEnemy = new Enemy(enemyData.name, enemyData.description, enemyRoom);
       World.enemies.push(newEnemy);
-      newEnemy.act() 
     }
 
   }
